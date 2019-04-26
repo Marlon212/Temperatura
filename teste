@@ -1,0 +1,211 @@
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.plaf.metal.MetalLookAndFeel;
+import javax.swing.plaf.metal.OceanTheme;
+
+public class GrauB extends JFrame implements ActionListener{
+	
+	private JLabel lblCelsius, lblFahrenheit, lblKelvin, lblResultado;
+	private JTextField txtCelsius;
+	private JButton btnCelsius, btnConverterF, btnConverterK, btnLimpar, btnFechar, btnMetal, btnWindows;
+	private GridBagConstraints restricoes = new GridBagConstraints();
+	private JPanel pnlTemperatura1, pnlTemperatura2, pnlBotoes, pnlResultado, pnlGrauB;
+	
+	public GrauB()
+	{
+		this.setTitle("Conversor de Temperatura");
+		this.setSize(750,350);
+		this.setLocation(700,300);
+		this.setResizable(false);
+		
+		Font f = new Font("TimesNewRoman", Font.PLAIN, 20);
+		
+		lblCelsius=new JLabel("Temperatura °C: ",JLabel.RIGHT);
+        lblCelsius.setFont(f);
+        txtCelsius=new JTextField(20);
+        txtCelsius.setFont(f);
+        txtCelsius.setToolTipText("Digite aqui a Temperatura em Celsius");
+        
+        btnCelsius=new JButton("Converter Celsius");
+        btnCelsius.setFont(f);
+        btnCelsius.setToolTipText("Clique aqui para converter a temperatura para °C");
+        btnCelsius.setMnemonic('C');
+        btnCelsius.addActionListener(this);
+        
+        btnConverterF=new JButton("Converter Fahrenheit");
+        btnConverterF.setFont(f);
+        btnConverterF.setToolTipText("Clique aqui para converter a temperatura para °F");
+        btnConverterF.setMnemonic('F');
+        btnConverterF.addActionListener(this);
+        
+        btnConverterK=new JButton("Converter Kelvin");
+        btnConverterK.setFont(f);
+        btnConverterK.setToolTipText("Clique aqui para converter a temperatura para Kelvin");
+        btnConverterK.setMnemonic('K');
+        btnConverterK.addActionListener(this);
+        
+        btnLimpar=new JButton("Limpar");
+        btnLimpar.setFont(f);
+        btnLimpar.setMnemonic('L');
+        btnLimpar.setToolTipText("Clique aqui para limpar as temperaturas digitadas");
+        btnLimpar.addActionListener(this);
+        
+        btnFechar=new JButton("Fechar");
+        btnFechar.setFont(f);
+        btnFechar.setMnemonic('F');
+        btnFechar.setToolTipText("Clique aqui para fechar o software");
+        btnFechar.addActionListener(this);
+
+        btnMetal=new JButton("Metal");
+	    btnMetal.setFont(f);
+		btnMetal.setMnemonic('M');
+		btnMetal.setToolTipText("Clique para alterar o look and feels para Metal");
+		btnMetal.addActionListener(this);
+		
+		btnWindows=new JButton("Windows");
+		btnWindows.setFont(f);
+		btnWindows.setMnemonic('W');
+		btnWindows.setToolTipText("Clique para alterar o look and feels para Windows");
+		btnWindows.addActionListener(this);
+		
+		lblFahrenheit=new JLabel("Fahrenheit: ",JLabel.RIGHT);
+		lblFahrenheit.setFont(f);
+		
+		lblKelvin=new JLabel("Kelvin: ",JLabel.RIGHT);
+		lblKelvin.setFont(f);
+	     
+	    restricoes.fill=GridBagConstraints.BOTH;
+	    restricoes.insets=new Insets(8,8,8,8);
+	    
+	    pnlTemperatura1=new JPanel(new GridBagLayout());
+	    addGridBag(0,0,lblCelsius,pnlTemperatura1);
+	    addGridBag(1,0,txtCelsius,pnlTemperatura1);
+	    
+	    pnlBotoes=new JPanel(new GridBagLayout());	    
+	    addGridBag(0,0,btnConverterF,pnlBotoes);
+	    addGridBag(1,0,btnConverterK,pnlBotoes);
+	    addGridBag(2,0,btnLimpar,pnlBotoes);
+	    addGridBag(2,1,btnFechar,pnlBotoes);
+	    addGridBag(1,1,btnMetal,pnlBotoes);
+	    addGridBag(0,1,btnWindows,pnlBotoes);
+	    
+	    pnlResultado=new JPanel(new GridBagLayout());
+	    addGridBag(0,0,lblFahrenheit,pnlResultado);
+	    addGridBag(0,1,lblKelvin,pnlResultado);
+	    
+	    pnlGrauB=new JPanel(new GridBagLayout());
+	    addGridBag(0,0,pnlTemperatura1,pnlGrauB);
+	    addGridBag(0,1,pnlBotoes,pnlGrauB);
+	    addGridBag(0,2,pnlResultado,pnlGrauB);
+	   
+	    
+	    Container P=getContentPane();
+	    P.add(pnlGrauB);
+	  
+	  }
+	    public void addGridBag(final int x,final int y,
+				final Component obj,JPanel pnl)
+		{
+	    	restricoes.gridx=x;
+			restricoes.gridy=y;
+					pnl.add(obj, restricoes);
+		}
+		
+		public void actionPerformed(ActionEvent evento)
+		{
+			Object origem=evento.getSource();
+	           if (origem == btnConverterF)
+	           {
+	        	   float valor, resultadof, resultadok;
+	        	   if(txtCelsius.getText().equals(""))
+	           {	   
+	        		JOptionPane.showMessageDialog(null,"É necessário digitar um valor!","Valor Inválido",JOptionPane.ERROR_MESSAGE);
+	   				txtCelsius.requestFocus();	
+	           }else
+	           {
+
+	        		   valor=Integer.parseInt(txtCelsius.getText().toString());
+	        		   try
+	        		   {
+	        			   resultadof = (valor*9/5) + 32;
+	        			   lblFahrenheit.setText("Temperatura Fahrenheit: " + resultadof);	        			 
+	        	       }catch (Exception e)
+	   				{
+	   					JOptionPane.showMessageDialog(null,"Valor 1 é inválido!","Valor 1 Inválido",JOptionPane.ERROR_MESSAGE);
+	   					txtCelsius.requestFocus();
+	   					txtCelsius.selectAll();
+	 	   				}        
+	           }
+	           }else if (origem == btnConverterK) 
+	           {
+	        	   float valor, resultadof, resultadok;
+	        	   if(txtCelsius.getText().equals(""))
+	           {	   
+	        		JOptionPane.showMessageDialog(null,"É necessário digitar um valor!","Valor Inválido",JOptionPane.ERROR_MESSAGE);
+	   				txtCelsius.requestFocus();	
+	           }else
+	           {
+
+	        		   valor=Integer.parseInt(txtCelsius.getText().toString());
+	        		   try
+	        		   {
+	        			   resultadok = (float) (valor + 273.15);
+	        			   lblKelvin.setText("Temperatura Kelvin: " + resultadok);
+	        	       }catch (Exception e)
+	   				{
+	   					JOptionPane.showMessageDialog(null,"Valor 1 é inválido!","Valor 1 Inválido",JOptionPane.ERROR_MESSAGE);
+	   					txtCelsius.requestFocus();
+	   					txtCelsius.selectAll();
+	 	   				}        
+	           }
+	           }else if (origem == btnLimpar)
+	   		{
+	   			txtCelsius.setText("");
+	   			lblResultado.setText("Resultado");
+	   			txtCelsius.requestFocus();
+	   		}else if (origem == btnFechar)
+	   		{
+	   			System.exit(0);					
+	   		}else if (origem == btnMetal)
+	   		{
+	   			try
+	   			{
+	   				MetalLookAndFeel metal = new MetalLookAndFeel();
+	   				OceanTheme ocean = new OceanTheme();
+	   				UIManager.setLookAndFeel(metal);
+	   				SwingUtilities.updateComponentTreeUI(this);
+	   			}catch (Exception erro){}
+	   		}else if (origem == btnWindows)
+	   		{
+	   			try
+	   			{
+	   				UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+	   				SwingUtilities.updateComponentTreeUI(this);
+	   			}catch (Exception erro){}
+	   			
+	   		}					
+	   	}
+	
+
+		public static void main(String[] args) {
+			GrauB grau=new GrauB();
+			grau.setVisible(true);
+
+		}
+
+	}
